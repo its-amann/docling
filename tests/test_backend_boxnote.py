@@ -327,6 +327,15 @@ def test_ordered_list_without_valid_order_starts_at_one(attrs):
     assert doc.export_to_markdown() == "1. First\n2. Second"
 
 
+def test_ordered_list_with_null_attrs_starts_at_one():
+    node = _ordered_list(None, "First", "Second")
+    node["attrs"] = None
+    payload = {"doc": {"type": "doc", "content": [node]}}
+    doc = get_converter().convert(_boxnote_stream(payload)).document
+
+    assert doc.export_to_markdown() == "1. First\n2. Second"
+
+
 def test_empty_leading_paragraph_keeps_the_following_paragraph_in_order():
     # The first block of a list item becomes its text only when it is a
     # paragraph. An empty one must not let a later paragraph take that place,
